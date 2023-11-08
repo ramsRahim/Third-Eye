@@ -9,12 +9,14 @@ from PIL import Image
 
 torch.backends.quantized.engine = 'qnnpack'
 
-cap = cv2.VideoCapture(0, cv2.CAP_V4L2)
-cap.set(cv2.CAP_PROP_FRAME_WIDTH, 224)
-cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 224)
-cap.set(cv2.CAP_PROP_FPS, 36)
+cap = cv2.VideoCapture(0)
 
-"""preprocess = transforms.Compose([
+if not cap.isOpened():
+    print("Cannot open camera")
+    exit()
+
+
+preprocess = transforms.Compose([
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
 ])
@@ -54,4 +56,4 @@ with torch.no_grad():
         if now - last_logged > 1:
             print(f"{frame_count / (now-last_logged)} fps")
             last_logged = now
-            frame_count = 0"""
+            frame_count = 0
