@@ -12,7 +12,7 @@ import ast
 
 # Read the labels
 
-with open('/home/ani/project/label.txt','r') as f:
+with open('./label.txt','r') as f:
         class_labels_str = f.read()
         class_labels_dict = ast.literal_eval(class_labels_str)
 
