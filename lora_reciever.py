@@ -36,6 +36,7 @@ try:
         
 except:
     termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
+    print("except")
     # print('\x1b[2A',end='\r')
     # print(" "*100)
     # print(" "*100)
