@@ -71,12 +71,12 @@ with torch.no_grad():
         # do something with output ...
 
         # log model performance
-        frame_count += 1
-        now = time.time()
-        if now - last_logged > 1:
-            print(f"{frame_count / (now-last_logged)} fps")
-            last_logged = now
-            frame_count = 0
+        # frame_count += 1
+        # now = time.time()
+        # if now - last_logged > 1:
+        #     print(f"{frame_count / (now-last_logged)} fps")
+        #     last_logged = now
+        #     frame_count = 0
         cv2.imshow('image', image)
         if cv2.waitKey(1) == ord('q'):
             break

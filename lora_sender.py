@@ -23,6 +23,7 @@ import select
 import termios
 import tty
 from threading import Timer
+import subprocess
 
 old_settings = termios.tcgetattr(sys.stdin)
 tty.setcbreak(sys.stdin.fileno())
@@ -44,6 +45,15 @@ def get_cpu_temp():
     tempFile.close()
     return float(cpu_temp)/1000
 
+def get_classification_label():
+    # Run the classifier script and capture its output
+    result = subprocess.run(['python', 'camera.py'], capture_output=True, text=True)
+    
+    # Extract the label from the output
+    label = result.stdout.strip()
+    
+    return label
+
 #   serial_num
 #       PiZero, Pi3B+, and Pi4B use "/dev/ttyS0"
 #
@@ -64,6 +74,26 @@ def get_cpu_temp():
 
 # node = sx126x.sx126x(serial_num = "/dev/ttyS0",freq=433,addr=0,power=22,rssi=False,air_speed=2400,relay=False)
 node = sx126x.sx126x(serial_num = "/dev/ttyS0",freq=868,addr=0,power=22,rssi=True,air_speed=2400,relay=False)
+
+def sending_label():
+    # Get the classification label
+    label = get_classification_label()
+
+    # Encode the label as bytes
+    label_bytes = label.encode()
+
+    # Prepare the data packet (assuming address and frequency details are required)
+    # Adjust the address and frequency details as per your requirement
+    addr_high = 0  # Example high byte of address
+    addr_low = 1   # Example low byte of address
+    offset_frequence = 18  # Example frequency offset
+
+    # Construct the data packet
+    data = bytes([addr_high]) + bytes([addr_low]) + bytes([offset_frequence]) + label_bytes
+
+    # Send the data
+    node.send(data)
+    print(f"Sent label: {label}")
 
 def send_deal():
     get_rec = ""
@@ -120,6 +150,7 @@ try:
     print("Press \033[1;32mEsc\033[0m to exit")
     print("Press \033[1;32mi\033[0m   to send")
     print("Press \033[1;32ms\033[0m   to send cpu temperature every 10 seconds")
+    print("Press \033[1;32ml\033[0m   to send labels")
     
     # it will send rpi cpu temperature every 10 seconds 
     seconds = 10
@@ -134,6 +165,8 @@ try:
             # dectect key i
             if c == '\x69':
                 send_deal()
+            if c == '\x6C':
+                sending_label()
             # dectect key s
             if c == '\x73':
                 print("Press \033[1;32mc\033[0m   to exit the send task")
