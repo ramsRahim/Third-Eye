@@ -1,27 +1,17 @@
-bannister, banister, balustrade, balusters, handrail
-bannister, banister, balustrade, balusters, handrail
-bannister, banister, balustrade, balusters, handrail
-bannister, banister, balustrade, balusters, handrail
-bannister, banister, balustrade, balusters, handrail
-bannister, banister, balustrade, balusters, handrail
-bannister, banister, balustrade, balusters, handrail
-bannister, banister, balustrade, balusters, handrail
-suit, suit of clothes
-dishwasher, dish washer, dishwashing machine
-dishwasher, dish washer, dishwashing machine
-dishwasher, dish washer, dishwashing machine
-dishwasher, dish washer, dishwashing machine
-dishwasher, dish washer, dishwashing machine
-dishwasher, dish washer, dishwashing machine
-dishwasher, dish washer, dishwashing machine
-dishwasher, dish washer, dishwashing machine
-dishwasher, dish washer, dishwashing machine
-dishwasher, dish washer, dishwashing machine
-dishwasher, dish washer, dishwashing machine
-dishwasher, dish washer, dishwashing machine
-dishwasher, dish washer, dishwashing machine
-dishwasher, dish washer, dishwashing machine
-dishwasher, dish washer, dishwashing machine
-dishwasher, dish washer, dishwashing machine
-dishwasher, dish washer, dishwashing machine
-dishwasher, dish washer, dishwashing machine
+envelope
+washbasin, handbasin, washbowl, lavabo, wash-hand basin
+washbasin, handbasin, washbowl, lavabo, wash-hand basin
+envelope
+envelope
+envelope
+washbasin, handbasin, washbowl, lavabo, wash-hand basin
+envelope
+washbasin, handbasin, washbowl, lavabo, wash-hand basin
+envelope
+washbasin, handbasin, washbowl, lavabo, wash-hand basin
+washbasin, handbasin, washbowl, lavabo, wash-hand basin
+washbasin, handbasin, washbowl, lavabo, wash-hand basin
+washbasin, handbasin, washbowl, lavabo, wash-hand basin
+washbasin, handbasin, washbowl, lavabo, wash-hand basin
+envelope
+washbasin, handbasin, washbowl, lavabo, wash-hand basin

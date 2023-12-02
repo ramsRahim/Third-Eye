@@ -61,6 +61,9 @@ with torch.no_grad():
         _, predicted_class = torch.max(probabilities, 0)
         predicted_label = class_labels[predicted_class.item()]
         print(predicted_label)
+        # Write a label to a file
+        with open('pred_labels.txt', 'a') as file:  # 'a' mode for append
+            file.write(predicted_label + "\n")
 
         # Display the image
         cv2.imshow('image', image)

@@ -127,45 +127,12 @@ def send_cpu_continue(continue_or_not = True):
         pass
 
 try:
-    time.sleep(1)
-    print("Press \033[1;32mEsc\033[0m to exit")
-    print("Press \033[1;32mi\033[0m   to send")
-    print("Press \033[1;32ms\033[0m   to send cpu temperature every 10 seconds")
-    print("Press \033[1;32ml\033[0m   to send labels")
     
-    # it will send rpi cpu temperature every 10 seconds 
-    seconds = 10
+    while True:  
+        latest_label = read_latest_label(labels_file_path)
+        send_label(latest_label)
+        time.sleep(10)
     
-    while True:
-
-        if select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], []):
-            c = sys.stdin.read(1)
-
-            # dectect key Esc
-            if c == '\x1b': break
-            # dectect key i
-            if c == '\x69':
-                send_deal()
-            if c == '\x6C':
-                latest_label = read_latest_label(labels_file_path)
-                send_label(latest_label)
-                time.sleep(10)
-            # dectect key s
-            if c == '\x73':
-                print("Press \033[1;32mc\033[0m   to exit the send task")
-                timer_task = Timer(seconds,send_cpu_continue)
-                timer_task.start()
-                
-                while True:
-                    if sys.stdin.read(1) == '\x63':
-                        timer_task.cancel()
-                        print('\x1b[1A',end='\r')
-                        print(" "*100)
-                        print('\x1b[1A',end='\r')
-                        break
-
-            sys.stdout.flush()
-            
         #node.receive()
         
         # timer,send messages automatically
