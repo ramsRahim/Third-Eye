@@ -45,55 +45,35 @@ def get_cpu_temp():
     tempFile.close()
     return float(cpu_temp)/1000
 
-def get_classification_label():
-    # Run the classifier script and capture its output
-    result = subprocess.run(['python', 'camera.py'], capture_output=True, text=True)
-    
-    # Extract the label from the output
-    label = result.stdout.strip()
-    
-    return label
-
-#   serial_num
-#       PiZero, Pi3B+, and Pi4B use "/dev/ttyS0"
-#
-#    Frequency is [850 to 930], or [410 to 493] MHz
-#
-#    address is 0 to 65535
-#        under the same frequence,if set 65535,the node can receive 
-#        messages from another node of address is 0 to 65534 and similarly,
-#        the address 0 to 65534 of node can receive messages while 
-#        the another note of address is 65535 sends.
-#        otherwise two node must be same the address and frequence
-#
-#    The tramsmit power is {10, 13, 17, and 22} dBm
-#
-#    RSSI (receive signal strength indicator) is {True or False}
-#        It will print the RSSI value when it receives each message
-#
+def read_latest_label(file_path):
+    # Read the last line from the file
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+        if lines:
+            return lines[-1].strip()  # Get the last line and strip any whitespace/newline characters
+        else:
+            return None
 
 # node = sx126x.sx126x(serial_num = "/dev/ttyS0",freq=433,addr=0,power=22,rssi=False,air_speed=2400,relay=False)
 node = sx126x.sx126x(serial_num = "/dev/ttyS0",freq=868,addr=0,power=22,rssi=True,air_speed=2400,relay=False)
 
-def sending_label():
-    # Get the classification label
-    label = get_classification_label()
+def send_label(label):
+    if label:
+        # Encode the label as bytes
+        label_bytes = label.encode()
+        addr_high = 0  # Example high byte of address
+        addr_low = 1   # Example low byte of address
+        offset_frequence = 18  # Example frequency offset
 
-    # Encode the label as bytes
-    label_bytes = label.encode()
+        # Construct the data packet
+        data = bytes([addr_high]) + bytes([addr_low]) + bytes([offset_frequence]) + label_bytes
+            # You might want to include additional info like address or frequency
+        # For simplicity, I'm sending only the label here
+        node.send(label_bytes)
+        print(f"Sent label: {label}")
 
-    # Prepare the data packet (assuming address and frequency details are required)
-    # Adjust the address and frequency details as per your requirement
-    addr_high = 0  # Example high byte of address
-    addr_low = 1   # Example low byte of address
-    offset_frequence = 18  # Example frequency offset
-
-    # Construct the data packet
-    data = bytes([addr_high]) + bytes([addr_low]) + bytes([offset_frequence]) + label_bytes
-
-    # Send the data
-    node.send(data)
-    print(f"Sent label: {label}")
+# File path to the labels file
+labels_file_path = './pred_labels.txt'
 
 def send_deal():
     get_rec = ""
@@ -166,7 +146,9 @@ try:
             if c == '\x69':
                 send_deal()
             if c == '\x6C':
-                sending_label()
+                latest_label = read_latest_label(labels_file_path)
+                send_label(latest_label)
+                time.sleep(10)
             # dectect key s
             if c == '\x73':
                 print("Press \033[1;32mc\033[0m   to exit the send task")
@@ -183,7 +165,7 @@ try:
 
             sys.stdout.flush()
             
-        node.receive()
+        #node.receive()
         
         # timer,send messages automatically
         
